@@ -1,0 +1,362 @@
+/* =============================================
+   VARIABLES & RESET
+============================================= */
+:root {
+  --rayon: 16px;
+  --transition: all 0.3s ease;
+  --ombre: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+  background: #0f2027;
+}
+
+/* =============================================
+   FOND ANIMÉ — change selon la météo
+============================================= */
+.fond-anime {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  transition: background 1s ease;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+}
+
+.fond-anime.ensoleille {
+  background: linear-gradient(135deg, #f7971e, #ffd200, #f7971e);
+}
+
+.fond-anime.nuageux {
+  background: linear-gradient(135deg, #4b6cb7, #182848);
+}
+
+.fond-anime.pluvieux {
+  background: linear-gradient(135deg, #1c1c2e, #2d3561, #1c1c2e);
+}
+
+.fond-anime.nuit {
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+}
+
+/* =============================================
+   CONTENEUR PRINCIPAL
+============================================= */
+.app {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 520px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* =============================================
+   EN-TÊTE
+============================================= */
+.entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.5px;
+}
+
+.btn-geo {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 99px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition);
+  backdrop-filter: blur(10px);
+}
+
+.btn-geo:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+/* =============================================
+   RECHERCHE
+============================================= */
+.recherche-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.input-recherche {
+  flex: 1;
+  padding: 0.9rem 1.2rem;
+  border-radius: 99px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  color: white;
+  transition: var(--transition);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.input-recherche::placeholder { color: rgba(255, 255, 255, 0.5); }
+
+.input-recherche:focus {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-recherche {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.btn-recherche:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+}
+
+/* =============================================
+   ERREUR
+============================================= */
+.erreur {
+  background: rgba(255, 80, 80, 0.2);
+  border: 1px solid rgba(255, 80, 80, 0.4);
+  color: #ffb3b3;
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--rayon);
+  font-size: 0.9rem;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+/* =============================================
+   CHARGEMENT
+============================================= */
+.chargement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* =============================================
+   MÉTÉO PRINCIPALE
+============================================= */
+.meteo-principale {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--rayon);
+  padding: 2rem;
+  text-align: center;
+  color: white;
+  box-shadow: var(--ombre);
+}
+
+.ville-nom {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.ville-date {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 1.5rem;
+}
+
+.temp-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.meteo-icone {
+  font-size: 5rem;
+  line-height: 1;
+  animation: flotter 3s ease-in-out infinite;
+}
+
+@keyframes flotter {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.temperature {
+  font-size: 5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.unite {
+  font-size: 2rem;
+  font-weight: 300;
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.description {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: capitalize;
+  margin-bottom: 1.5rem;
+}
+
+/* GRILLE DES DÉTAILS */
+.details-grille {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.8rem;
+}
+
+.detail-carte {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 0.8rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  transition: var(--transition);
+}
+
+.detail-carte:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
+}
+
+.detail-icone { font-size: 1.3rem; }
+
+.detail-valeur {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: white;
+}
+
+.detail-label {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* =============================================
+   PRÉVISIONS 5 JOURS
+============================================= */
+.previsions {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--rayon);
+  padding: 1.5rem;
+  color: white;
+  box-shadow: var(--ombre);
+}
+
+.previsions-titre {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.previsions-grille {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding-bottom: 0.3rem;
+}
+
+.previsions-grille::-webkit-scrollbar { height: 4px; }
+.previsions-grille::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+.previsions-grille::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 99px; }
+
+.prevision-carte {
+  flex: 0 0 90px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 0.8rem 0.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  transition: var(--transition);
+  cursor: default;
+}
+
+.prevision-carte:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
+}
+
+.prevision-jour {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.65);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.prevision-icone { font-size: 1.8rem; }
+
+.prevision-temp {
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+}
+
+.prevision-min {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* =============================================
+   RESPONSIVE MOBILE
+============================================= */
+@media (max-width: 480px) {
+  .app { padding: 1rem; margin: 1rem; }
+  .details-grille { grid-template-columns: repeat(2, 1fr); }
+  .temperature { font-size: 4rem; }
+  .meteo-icone { font-size: 4rem; }
+}

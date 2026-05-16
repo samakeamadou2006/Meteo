@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Météo App — Samaké Amadou</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- FOND ANIMÉ -->
+  <div class="fond-anime" id="fond"></div>
+
+  <div class="app">
+
+    <!-- EN-TÊTE -->
+    <header class="entete">
+      <h1 class="logo">🌤 MétéoApp</h1>
+      <button type="button" class="btn-geo" id="btn-geo" title="Ma position">
+        📍 Ma position
+      </button>
+    </header>
+
+    <!-- BARRE DE RECHERCHE -->
+    <div class="recherche-box">
+      <div class="recherche-wrapper">
+        <input
+          type="text"
+          id="input-ville"
+          class="input-recherche"
+          list="city-suggestions"
+          placeholder="Rechercher une ville... (ex: Abidjan)"
+          autocomplete="off"
+        />
+        <datalist id="city-suggestions"></datalist>
+        <button type="button" class="btn-recherche" id="btn-recherche">🔍</button>
+      </div>
+    </div>
+
+    <!-- MESSAGE D'ERREUR -->
+    <div class="erreur" id="erreur" hidden>
+      <span id="erreur-message">Ville introuvable. Vérifie l'orthographe.</span>
+    </div>
+
+    <!-- CHARGEMENT -->
+    <div class="chargement" id="chargement" hidden>
+      <div class="spinner"></div>
+      <p>Chargement...</p>
+    </div>
+
+    <!-- MÉTÉO PRINCIPALE -->
+    <main class="meteo-principale" id="meteo-principale" hidden>
+
+      <!-- VILLE ET DATE -->
+      <div class="ville-info">
+        <h2 class="ville-nom" id="ville-nom">--</h2>
+        <p class="ville-date" id="ville-date">--</p>
+      </div>
+
+      <!-- ICÔNE ET TEMPÉRATURE -->
+      <div class="temp-box">
+        <div class="meteo-icone" id="meteo-icone">☀️</div>
+        <div class="temp-info">
+          <span class="temperature" id="temperature">--</span>
+          <span class="unite">°C</span>
+        </div>
+      </div>
+
+      <p class="description" id="description">--</p>
+
+      <!-- DÉTAILS -->
+      <div class="details-grille">
+        <div class="detail-carte">
+          <span class="detail-icone">💧</span>
+          <span class="detail-valeur" id="humidite">--</span>
+          <span class="detail-label">Humidité</span>
+        </div>
+        <div class="detail-carte">
+          <span class="detail-icone">💨</span>
+          <span class="detail-valeur" id="vent">--</span>
+          <span class="detail-label">Vent</span>
+        </div>
+        <div class="detail-carte">
+          <span class="detail-icone">🌡️</span>
+          <span class="detail-valeur" id="ressenti">--</span>
+          <span class="detail-label">Ressenti</span>
+        </div>
+        <div class="detail-carte">
+          <span class="detail-icone">👁️</span>
+          <span class="detail-valeur" id="visibilite">--</span>
+          <span class="detail-label">Visibilité</span>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- PRÉVISIONS 5 JOURS -->
+    <section class="previsions" id="previsions" hidden>
+      <h3 class="previsions-titre">Prévisions 5 jours</h3>
+      <div class="previsions-grille" id="previsions-grille">
+        <!-- Généré par JavaScript -->
+      </div>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
