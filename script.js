@@ -31,6 +31,7 @@ const elVisibilite  = document.getElementById("visibilite");
 const elPrevisions  = document.getElementById("previsions-grille");
 const datalistSuggestions = document.getElementById("city-suggestions");
 let suggestionsTimer = null;
+let heureInterval = null;
 
 // =============================================
 // CORRESPONDANCE CODE MÉTÉO → EMOJI + FOND
@@ -54,8 +55,8 @@ function getInfosMeteo(codeMeteo, estNuit = false) {
 // =============================================
 // FORMATER LA DATE EN FRANÇAIS
 // =============================================
-function formaterDate(timestamp) {
-  const date = new Date(timestamp * 1000); // API donne en secondes, JS veut millisecondes
+function formaterDate(timestamp, decalageSecondes = 0) {
+  const date = new Date((timestamp + decalageSecondes) * 1000); // API donne en secondes, JS veut millisecondes
   return date.toLocaleDateString("fr-FR", {
     weekday: "long",
     day: "numeric",
@@ -68,6 +69,11 @@ function formaterDate(timestamp) {
 function formaterJour(timestamp) {
   const date = new Date(timestamp * 1000);
   return date.toLocaleDateString("fr-FR", { weekday: "short" });
+}
+
+function mettreAJourHeure(timezoneOffset) {
+  const maintenant = Math.floor(Date.now() / 1000);
+  elVilleDate.textContent = formaterDate(maintenant, timezoneOffset);
 }
 
 // =============================================
@@ -245,9 +251,16 @@ function afficherDonnees(data) {
   // Mettre à jour le fond animé
   fond.className = `fond-anime ${typeFond}`;
 
+  // Mettre à jour l'heure en temps réel avec le fuseau de la ville
+  const timezoneOffset = data.timezone || 0;
+  if (heureInterval) {
+    clearInterval(heureInterval);
+  }
+  mettreAJourHeure(timezoneOffset);
+  heureInterval = setInterval(() => mettreAJourHeure(timezoneOffset), 60000);
+
   // Remplir les éléments HTML
   elVilleNom.textContent  = `${data.name}, ${data.sys.country}`;
-  elVilleDate.textContent = formaterDate(data.dt);
   elIcone.textContent     = icone;
   elTemp.textContent      = Math.round(data.main.temp);
   elDesc.textContent      = data.weather[0].description;
