@@ -280,6 +280,258 @@ body {
 }
 
 /* =============================================
+   PRÉVISIONS HORAIRES (toutes les 3h)
+   — Nouveau composant —
+============================================= */
+.horaires {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--rayon);
+  padding: 1.5rem;
+  color: white;
+  box-shadow: var(--ombre);
+  /* Animation d'apparition */
+  animation: fadeUp 0.4s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* En-tête : titre + onglets jour */
+.horaires-entete {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin-bottom: 1.1rem;
+}
+
+.horaires-titre {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Onglets de sélection du jour */
+.horaires-onglets {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.onglet-jour {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.65);
+  padding: 0.35rem 0.85rem;
+  border-radius: 99px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  text-transform: capitalize;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.onglet-jour:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* Onglet actif */
+.onglet-jour.actif {
+  background: rgba(255, 255, 255, 0.9);
+  color: #1a2a3a;
+  border-color: transparent;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
+}
+
+/* Wrapper pour le dégradé de fondu sur les bords */
+.horaires-timeline-wrapper {
+  position: relative;
+}
+
+/* Dégradé fondu droit pour indiquer le scroll */
+.horaires-timeline-wrapper::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 8px;
+  width: 40px;
+  background: linear-gradient(to right, transparent, rgba(0,0,0,0.15));
+  pointer-events: none;
+  border-radius: 0 12px 12px 0;
+}
+
+/* Timeline horizontale scrollable */
+.horaires-timeline {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding: 0.5rem 0.2rem 0.8rem;
+  scroll-behavior: smooth;
+  /* Scroll fluide sur iOS */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Masquer scrollbar visuellement tout en gardant le scroll */
+.horaires-timeline::-webkit-scrollbar { height: 4px; }
+.horaires-timeline::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 99px;
+}
+.horaires-timeline::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 99px;
+}
+
+/* =============================================
+   CARTE HEURE — glassmorphism
+============================================= */
+.heure-carte {
+  flex: 0 0 82px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+  padding: 0.75rem 0.4rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  transition: var(--transition);
+  cursor: default;
+  position: relative;
+  /* Animation d'entrée décalée */
+  animation: cardEntree 0.3s ease both;
+}
+
+@keyframes cardEntree {
+  from { opacity: 0; transform: scale(0.92) translateY(6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.heure-carte:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Carte de l'heure actuelle — mise en évidence */
+.heure-carte.maintenant {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25), 0 6px 20px rgba(0,0,0,0.2);
+}
+
+/* Badge "Maintenant" */
+.badge-maintenant {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  color: #1a2a3a;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Heure */
+.heure-label {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.heure-carte.maintenant .heure-label {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 700;
+}
+
+/* Icône météo */
+.heure-icone {
+  font-size: 1.7rem;
+  line-height: 1;
+  /* Légère animation de flottement sur les icônes */
+  animation: floatIcon 4s ease-in-out infinite;
+}
+
+/* Décaler l'animation de chaque carte pour un effet de vague */
+.heure-carte:nth-child(odd) .heure-icone {
+  animation-delay: 0.5s;
+}
+
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* Température */
+.heure-temp {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: white;
+}
+
+/* Séparateur */
+.heure-separateur {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 0.1rem 0;
+}
+
+/* Détails : humidité + vent */
+.heure-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  width: 100%;
+}
+
+.heure-detail-ligne {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+}
+
+.heure-carte.maintenant .heure-detail-ligne {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Condition météo abrégée */
+.heure-condition {
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: capitalize;
+  line-height: 1.2;
+  text-align: center;
+  /* Limiter à 2 lignes */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* =============================================
    PRÉVISIONS 5 JOURS
 ============================================= */
 .previsions {
@@ -359,4 +611,16 @@ body {
   .details-grille { grid-template-columns: repeat(2, 1fr); }
   .temperature { font-size: 4rem; }
   .meteo-icone { font-size: 4rem; }
+
+  /* Cartes horaires légèrement plus étroites sur mobile */
+  .heure-carte { flex: 0 0 75px; }
+
+  /* Onglets jours : scroll horizontal si nécessaire */
+  .horaires-onglets {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .horaires-onglets::-webkit-scrollbar { display: none; }
 }

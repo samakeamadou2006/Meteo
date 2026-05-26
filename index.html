@@ -94,6 +94,29 @@
 
     </main>
 
+    <!-- =============================================
+         PRÉVISIONS HORAIRES (toutes les 3h)
+         Nouveau composant : onglets par jour + timeline
+    ============================================= -->
+    <section class="horaires" id="horaires" hidden>
+
+      <!-- Titre + onglets de sélection de jour -->
+      <div class="horaires-entete">
+        <h3 class="horaires-titre">🕐 Prévisions par heure</h3>
+        <div class="horaires-onglets" id="horaires-onglets" role="tablist" aria-label="Sélectionner un jour">
+          <!-- Généré dynamiquement par JavaScript -->
+        </div>
+      </div>
+
+      <!-- Timeline horizontale scrollable -->
+      <div class="horaires-timeline-wrapper">
+        <div class="horaires-timeline" id="horaires-timeline" role="region" aria-label="Prévisions horaires">
+          <!-- Généré dynamiquement par JavaScript -->
+        </div>
+      </div>
+
+    </section>
+
     <!-- PRÉVISIONS 5 JOURS -->
     <section class="previsions" id="previsions" hidden>
       <h3 class="previsions-titre">Prévisions 5 jours</h3>
